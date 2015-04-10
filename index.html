@@ -5,8 +5,8 @@
 <head>
     <title>Vase Creator</title>
     <script type="text/javascript" src="js/three.js"></script>
-
     <script type="text/javascript" src="js/stats.js"></script>
+    <script type="text/javascript" src="js/stats-init-es5.js"></script>
     <script type="text/javascript" src="js/dat.gui.js"></script>
     <style>
         body {
@@ -30,7 +30,10 @@
     // once everything is loaded, we run our Three.js stuff.
     function init() {
 
-        var stats = initStats();
+        //init stats object
+        var stats = new Stats();
+        //wrapper
+        var myStats = new StatsInit(stats, "Stats-output", "absolute", "top", "left", "0px");
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
@@ -127,8 +130,8 @@
             scene.add(latheMesh);
 
             //rotate
-            spGroup.rotation.x = -(Math.PI/2);
-            latheMesh.rotation.x = -(Math.PI/2);
+            //spGroup.rotation.x = -(Math.PI/2);
+            //latheMesh.rotation.x = -(Math.PI/2);
         }
 
         function createMesh(geom) {
@@ -147,30 +150,16 @@
         }
 
         function render() {
-            stats.update();
+            myStats.update();
 
-            //spGroup.rotation.x = step;
-            //latheMesh.rotation.x = step += 0.01;
+            spGroup.rotation.x = step;
+            latheMesh.rotation.x = step += 0.01;
 
             // render using requestAnimationFrame
             requestAnimationFrame(render);
             webGLRenderer.render(scene, camera);
         }
 
-        function initStats() {
-
-            var stats = new Stats();
-            stats.setMode(0); // 0: fps, 1: ms
-
-            // Align top-left
-            stats.domElement.style.position = 'absolute';
-            stats.domElement.style.left = '0px';
-            stats.domElement.style.top = '0px';
-
-            document.getElementById("Stats-output").appendChild(stats.domElement);
-
-            return stats;
-        }
     }
     window.onload = init;
 </script>
