@@ -61,7 +61,7 @@
         // the mesh
         var latheMesh;
 
-        generatePoints(12, 2, 2 * Math.PI);
+        generatePoints(12, 2, 2 * Math.PI, 5, 0.2, 0.3);
 
         // setup the control gui
         var controls = new function () {
@@ -70,11 +70,14 @@
             this.segments = 12;
             this.phiStart = 0;
             this.phiLength = 2 * Math.PI;
+            this.heightVar = 5;
+            this.sinVar = 0.2;
+            this.cosVar = 0.3;
 
             this.redraw = function () {
                 scene.remove(spGroup);
                 scene.remove(latheMesh);
-                generatePoints(controls.segments, controls.phiStart, controls.phiLength);
+                generatePoints(controls.segments, controls.phiStart, controls.phiLength, controls.heightVar, controls.sinVar, controls.cosVar);
             };
         };
 
@@ -82,26 +85,28 @@
         gui.add(controls, 'segments', 0, 50).step(1).onChange(controls.redraw);
         gui.add(controls, 'phiStart', 0, 2 * Math.PI).onChange(controls.redraw);
         gui.add(controls, 'phiLength', 0, 2 * Math.PI).onChange(controls.redraw);
-
+        gui.add(controls, 'heightVar', 1, 10).onChange(controls.redraw);
+        gui.add(controls, 'sinVar', 0.1,  0.4).onChange(controls.redraw);
+        gui.add(controls, 'cosVar', 0.1,  0.4).onChange(controls.redraw);
 
         render();
 
-        function generatePoints(segments, phiStart, phiLength) {
+        function generatePoints(segments, phiStart, phiLength, heightVar, sinVar, cosVar) {
             // add 10 random spheres
             var points = [];
-            var height = 5;
             var count = 30;
+            var heightVar = heightVar;
+            var sinVar = sinVar;
+            var cosVar = cosVar;
+
             for (var i = 0; i < count; i++) {
                 points.push(
                   new THREE.Vector3(
-                    (Math.sin(i * 0.2) + Math.cos(i * 0.3)) * height + 12,
+                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
                     0,
                     (i - count) + count / 2
                     )
                   );
-                var myX = (Math.sin(i * 0.2) + Math.cos(i * 0.3)) * height + 12;
-                var myZ = ( i - count ) + count / 2;
-                console.log(myX + "+" + myZ);
             }
 
             spGroup = new THREE.Object3D();
@@ -119,11 +124,11 @@
             var latheGeometry = new THREE.LatheGeometry(points, segments, phiStart, phiLength);
             latheMesh = createMesh(latheGeometry);
 
-            //scene.add(latheMesh);
+            scene.add(latheMesh);
 
             //rotate
             spGroup.rotation.x = -(Math.PI/2);
-            //latheMesh.rotation.x = -(Math.PI/2);
+            latheMesh.rotation.x = -(Math.PI/2);
         }
 
         function createMesh(geom) {
