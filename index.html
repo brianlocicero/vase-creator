@@ -56,51 +56,54 @@
         // add the output of the renderer to the html element
         document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
 
-        // call the render function
-        var step = 0;
-
-        // the points group
-        var spGroup;
         // the mesh
         var latheMesh;
 
-        generatePoints(12, 2, 2 * Math.PI, 5, 0.2, 0.3);
+        generatePoints(24, 5, 0.2, 0.3, -(Math.PI/2));
 
         // setup the control gui
         var controls = new function () {
-            // we need the first child, since it's a multimaterial
 
-            this.segments = 12;
-            this.phiStart = 0;
-            this.phiLength = 2 * Math.PI;
+            this.segments = 24;
             this.heightVar = 5;
             this.sinVar = 0.2;
             this.cosVar = 0.3;
+            this.rotation = -(Math.PI/2);
+            this.exportSTL = function () {
+              console.log('Export Me');
+            }
 
             this.redraw = function () {
-                scene.remove(spGroup);
                 scene.remove(latheMesh);
-                generatePoints(controls.segments, controls.phiStart, controls.phiLength, controls.heightVar, controls.sinVar, controls.cosVar);
+                generatePoints(controls.segments, controls.heightVar, controls.sinVar, controls.cosVar, controls.rotation);
             };
         };
 
-        var gui = new dat.GUI();
-        gui.add(controls, 'segments', 0, 50).step(1).onChange(controls.redraw);
-        gui.add(controls, 'phiStart', 0, 2 * Math.PI).onChange(controls.redraw);
-        gui.add(controls, 'phiLength', 0, 2 * Math.PI).onChange(controls.redraw);
-        gui.add(controls, 'heightVar', 1, 10).onChange(controls.redraw);
-        gui.add(controls, 'sinVar', 0.1,  0.4).onChange(controls.redraw);
-        gui.add(controls, 'cosVar', 0.1,  0.4).onChange(controls.redraw);
+        var exportSTL = function() { 
+            console.log("clicked"); 
+        };
 
+        var gui = new dat.GUI();
+        gui.add(controls, 'segments', 0, 50).name('Segments').step(1).onChange(controls.redraw);
+        gui.add(controls, 'heightVar', 1, 10).name('Curve Intensity').onChange(controls.redraw);
+        gui.add(controls, 'sinVar', 0.1,  0.4).name('Curve Adjust A').onChange(controls.redraw);
+        gui.add(controls, 'cosVar', 0.1,  0.4).name('Curve Adjust B').onChange(controls.redraw);
+        gui.add(controls, 'rotation', -(Math.PI/2),  Math.PI).name('Rotation').onChange(controls.redraw);
+        gui.add(controls, 'exportSTL').name('Export STL');
+
+        //render
         render();
 
-        function generatePoints(segments, phiStart, phiLength, heightVar, sinVar, cosVar) {
-            // add 10 random spheres
+        function generatePoints(segments, heightVar, sinVar, cosVar, rotation) {
+
             var points = [];
             var count = 30;
             var heightVar = heightVar;
             var sinVar = sinVar;
             var cosVar = cosVar;
+            var phiStart = 0;
+            var phiLength = 2*Math.PI;
+            var rotation = rotation;
 
             for (var i = 0; i < count; i++) {
                 points.push(
@@ -112,17 +115,6 @@
                   );
             }
 
-            spGroup = new THREE.Object3D();
-            var material = new THREE.MeshBasicMaterial({color: 0xff0000, transparent: false});
-            points.forEach(function (point) {
-                var spGeom = new THREE.SphereGeometry(0.2);
-                var spMesh = new THREE.Mesh(spGeom, material);
-                spMesh.position.copy(point);
-                spGroup.add(spMesh);
-            });
-            // add the points as a group to the scene
-            scene.add(spGroup);
-
             // use the same points to create a LatheGeometry
             var latheGeometry = new THREE.LatheGeometry(points, segments, phiStart, phiLength);
             latheMesh = createMesh(latheGeometry);
@@ -130,8 +122,7 @@
             scene.add(latheMesh);
 
             //rotate
-            //spGroup.rotation.x = -(Math.PI/2);
-            //latheMesh.rotation.x = -(Math.PI/2);
+            latheMesh.rotation.x = rotation;
         }
 
         function createMesh(geom) {
@@ -151,9 +142,6 @@
 
         function render() {
             myStats.update();
-
-            spGroup.rotation.x = step;
-            latheMesh.rotation.x = step += 0.01;
 
             // render using requestAnimationFrame
             requestAnimationFrame(render);
