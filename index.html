@@ -4,11 +4,12 @@
 
 <head>
     <title>Vase Creator</title>
-    <script type="text/javascript" src="js/three.js"></script>
+    <script type="text/javascript" src="node_modules/three/three.min.js"></script>
     <script type="text/javascript" src="js/stats.js"></script>
     <script type="text/javascript" src="js/stats-init-es5.js"></script>
     <script type="text/javascript" src="js/dat.gui.js"></script>
     <script type="text/javascript" src="js/gui-controls-es5.js"></script>
+    <script type="text/javascript" src="js/three2stl.js"></script>
     <style>
         body {
             /* set margin to 0 and overflow to hidden, to go fullscreen */
@@ -57,8 +58,9 @@
         // add the output of the renderer to the html element
         document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
 
-        // the mesh
+        //the mesh
         var latheMesh;
+        var latheGeometry;
 
         generatePoints(24, 5, 0.2, 0.3, -(Math.PI/2));
 
@@ -70,7 +72,7 @@
           generatePoints(guiControls.segments, guiControls.heightVar, guiControls.sinVar, guiControls.cosVar, guiControls.rotation);
         }
         function exportSTL () {
-          console.log("Clicked;")
+          var myStlString = stlFromGeometry(latheGeometry, {download:true} );
         }
         //controls values wrapper
         var guiControls = new GUIControls(24, 5, 0.2, 0.3, -(Math.PI/2), exportSTL);
@@ -98,6 +100,8 @@
             var rotation = rotation;
 
             for (var i = 0; i < count; i++) {
+
+            	//first one
             	if (i === 0) {
                 points.push(
                   new THREE.Vector3(
@@ -115,23 +119,26 @@
                     )
                   );
             	}
-                points.push(
-                  new THREE.Vector3(
-                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
-                    0,
-                    (i - count) + count / 2
-                    )
-                  );
 
-                if (i === 29) {
-                	 points.push(
-                  new THREE.Vector3(
-                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11.5,
-                    0,
-                    (i - count) + count / 2
-                    )
-                  );
-                }
+            	//default
+              points.push(
+                new THREE.Vector3(
+                  (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
+                  0,
+                  (i - count) + count / 2
+                  )
+                );
+
+              //last one
+              if (i === 29) {
+              	 points.push(
+                new THREE.Vector3(
+                  (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11.5,
+                  0,
+                  (i - count) + count / 2
+                  )
+                );
+              }
 
             }
 
@@ -159,19 +166,13 @@
             // use the same points to create a LatheGeometry
             var latheGeometry = new THREE.LatheGeometry(points, segments, phiStart, phiLength);
 
-
             // use the same points to create a LatheGeometry
             var latheGeometry2 = new THREE.LatheGeometry(pointsR, segments, phiStart, phiLength);
-            //latheMesh2 = createMesh(latheGeometry2);
 
-            //scene.add(latheMesh);
-            //scene.add(latheMesh2);
-
-
-            //latheMesh2.rotation.x = rotation;
-
+            //merge
             latheGeometry.merge(latheGeometry2);
 
+            //then create mesh
             latheMesh = createMesh(latheGeometry);
 
             //rotate
