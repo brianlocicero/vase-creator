@@ -88,6 +88,7 @@
         function generatePoints(segments, heightVar, sinVar, cosVar, rotation) {
 
             var points = [];
+            var pointsR = [];
             var count = 30;
             var heightVar = heightVar;
             var sinVar = sinVar;
@@ -97,6 +98,23 @@
             var rotation = rotation;
 
             for (var i = 0; i < count; i++) {
+            	if (i === 0) {
+                points.push(
+                  new THREE.Vector3(
+                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11.5,
+                    0,
+                    (i - count) + count / 2
+                    )
+                  );
+
+                points.push(
+                  new THREE.Vector3(
+                    0,
+                    0,
+                    (i - count) + count / 2
+                    )
+                  );
+            	}
                 points.push(
                   new THREE.Vector3(
                     (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
@@ -104,16 +122,62 @@
                     (i - count) + count / 2
                     )
                   );
+
+                if (i === 29) {
+                	 points.push(
+                  new THREE.Vector3(
+                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11.5,
+                    0,
+                    (i - count) + count / 2
+                    )
+                  );
+                }
+
             }
+
+            for (var i = 0; i < count; i++) {
+
+            	if (i === 0) {
+                pointsR.push(
+                  new THREE.Vector3(
+                    0,
+                    0,
+                    (i - count) + count / 2
+                    )
+                  );
+            	}
+                pointsR.push(
+                  new THREE.Vector3(
+                    (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11.5,
+                    0,
+                    (i - count) + count / 2
+                    )
+                  );
+            }
+
 
             // use the same points to create a LatheGeometry
             var latheGeometry = new THREE.LatheGeometry(points, segments, phiStart, phiLength);
-            latheMesh = createMesh(latheGeometry);
 
-            scene.add(latheMesh);
+
+            // use the same points to create a LatheGeometry
+            var latheGeometry2 = new THREE.LatheGeometry(pointsR, segments, phiStart, phiLength);
+            //latheMesh2 = createMesh(latheGeometry2);
+
+            //scene.add(latheMesh);
+            //scene.add(latheMesh2);
+
+
+            //latheMesh2.rotation.x = rotation;
+
+            latheGeometry.merge(latheGeometry2);
+
+            latheMesh = createMesh(latheGeometry);
 
             //rotate
             latheMesh.rotation.x = rotation;
+
+            scene.add(latheMesh);
         }
 
         function createMesh(geom) {
