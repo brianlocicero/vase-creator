@@ -18,6 +18,9 @@
   "homepage": "https://github.com/brianlocicero/vase-creator",
   "dependencies": {
     "dat-gui": "^0.5.0",
+    "gulp": "^3.8.11",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
     "three": "^0.70.0"
   }
 }
