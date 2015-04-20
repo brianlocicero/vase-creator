@@ -1,7 +1,10 @@
 class VaseGeometry {
 
 	constructor (count, segments, heightVar, sinVar, cosVar) {
-		this.vasePoints = new VasePoints();
+
+    this.segments = segments;
+    console.log(this.segments);
+    this.vasePoints = new VasePoints();
     this.count = count;
     this.heightVar = heightVar;
     this.sinVar = sinVar;
