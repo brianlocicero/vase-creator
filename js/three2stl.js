@@ -3,20 +3,25 @@ function stlFromGeometry( geometry, options ) {
 	// calculate the faces and normals if they are not yet present
 	geometry.computeFaceNormals()
 
-	var addX = 0
-	var addY = 0
-	var addZ = 0
-	var download = false
+	var addX = 0;
+	var addY = 0;
+	var addZ = 0;
+	var download = false;
+	var setHref = false;
 
 	if ( options ) {
 		if ( options.useObjectPosition ) {
-			addX = geometry.mesh.position.x
-			addY = geometry.mesh.position.y
-			addZ = geometry.mesh.position.z
+			addX = geometry.mesh.position.x;
+			addY = geometry.mesh.position.y;
+			addZ = geometry.mesh.position.z;
 		}
 
 		if ( options.download ) {
-			download = true
+			download = true;
+		}
+
+		if ( options.setHref ) {
+			setHref = true;
 		}
 	}
 
@@ -78,7 +83,12 @@ function stlFromGeometry( geometry, options ) {
 
 	stl += 'endsolid'
 
-	if ( download ) {
+	if (setHref) {
+		var myHref = 'data:Application/octet-stream, ' + encodeURIComponent( stl );
+		$("a.download").attr('href', myHref);
+	}
+
+	if (download) {
 		document.location = 'data:Application/octet-stream, ' + encodeURIComponent( stl )
 	}
 

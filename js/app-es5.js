@@ -20,11 +20,12 @@ function init() {
     latheMesh = new VaseMesh(latheGeometry);
     latheMesh.rotation.x = guiControls.rotation;
     scene.add(latheMesh);
+    exportSTL();
   }
 
   function exportSTL() {
     var stlGeometry = latheGeometry.clone();
-    var myStlString = stlFromGeometry(stlGeometry, { download: true });
+    var myStlString = stlFromGeometry(stlGeometry, { setHref: true });
   }
 
   function render() {
@@ -51,12 +52,15 @@ function init() {
   gui.add(guiControls, "sinVar", 0.1, 0.4).name("Curve Adjust A").onChange(redraw);
   gui.add(guiControls, "cosVar", 0.1, 0.4).name("Curve Adjust B").onChange(redraw);
   gui.add(guiControls, "rotation", -(Math.PI / 2), Math.PI).name("Rotation").onChange(redraw);
-  gui.add(guiControls, "exportSTL").name("Export STL");
+  //gui.add(guiControls, 'exportSTL').name('Export STL');
 
   latheGeometry = new VaseGeometry(30, 24, 5, 0.2, 0.3);
   latheMesh = new VaseMesh(latheGeometry);
   latheMesh.rotation.x = -(Math.PI / 2);
   scene.add(latheMesh);
+
+  //set initial download
+  exportSTL();
 
   //render
   render();
