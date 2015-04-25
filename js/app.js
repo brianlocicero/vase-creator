@@ -21,7 +21,6 @@ function init() {
     latheMesh.rotation.x = guiControls.rotation;
     latheMesh.translateX(-7);
     scene.add(latheMesh);
-    exportSTL();
   }
 
   function exportSTL () {
@@ -71,6 +70,7 @@ function init() {
 
   //subsequently
   $("a.download").on("click", function() {
+    exportSTL();
     $(this).attr('href', document.myHref);
   })
 
