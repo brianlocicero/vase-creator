@@ -23,16 +23,16 @@ var VasePoints = (function () {
         //first one
         if (i === 0) {
           //start at zero
-          this.pointsOuter.push(new THREE.Vector3(0, 0, i - count + count / 2));
+          this.pointsOuter.push(new THREE.Vector3(0, 0, (i - count + count / 2) * 2));
           //do a regular one
-          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, i - count + count / 2));
+          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, (i - count + count / 2) * 2));
         } else if (i === 29) {
           //regular one
-          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, i - count + count / 2));
+          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, (i - count + count / 2) * 2));
           //offset
-          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, i - count + count / 2));
+          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, (i - count + count / 2) * 2));
         } else {
-          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, i - count + count / 2));
+          this.pointsOuter.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12, 0, (i - count + count / 2) * 2));
         }
       }
 
@@ -40,12 +40,12 @@ var VasePoints = (function () {
 
         if (i === 0) {
 
-          this.pointsInner.push(new THREE.Vector3(0, 0, i - count + count / 2 + 1));
+          this.pointsInner.push(new THREE.Vector3(0, 0, (i - count + count / 2) * 2 + 2));
 
-          this.pointsInner.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, i - count + count / 2 + 1));
+          this.pointsInner.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, (i - count + count / 2) * 2 + 2));
         } else {
 
-          this.pointsInner.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, i - count + count / 2));
+          this.pointsInner.push(new THREE.Vector3((Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11, 0, (i - count + count / 2) * 2));
         }
       }
     }

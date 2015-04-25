@@ -16,14 +16,14 @@ class VasePoints {
         this.pointsOuter.push(
           new THREE.Vector3(
             0,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
         //do a regular one
         this.pointsOuter.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
       } else if (i === 29) {
@@ -31,21 +31,21 @@ class VasePoints {
         this.pointsOuter.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
         //offset
         this.pointsOuter.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
       } else {
         this.pointsOuter.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 12,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
       }
@@ -59,14 +59,14 @@ class VasePoints {
         this.pointsInner.push(
           new THREE.Vector3(
             0,
-            0, ((i - count) + count / 2) + 1
+            0, (((i - count) + count / 2) * 2) + 2
           )
         );
 
         this.pointsInner.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11,
-            0, ((i - count) + count / 2) + 1
+            0, (((i - count) + count / 2) * 2) + 2
           )
         );
 
@@ -75,7 +75,7 @@ class VasePoints {
         this.pointsInner.push(
           new THREE.Vector3(
             (Math.sin(i * sinVar) + Math.cos(i * cosVar)) * heightVar + 11,
-            0, (i - count) + count / 2
+            0, ((i - count) + count / 2) * 2
           )
         );
       }

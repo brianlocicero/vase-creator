@@ -84,8 +84,8 @@ function stlFromGeometry( geometry, options ) {
 	stl += 'endsolid'
 
 	if (setHref) {
-		var myHref = 'data:Application/octet-stream, ' + encodeURIComponent( stl );
-		$("a.download").attr('href', myHref);
+		document.myHref = 'data:Application/octet-stream, ' + encodeURIComponent( stl );
+		//$("a.download").attr('href', myHref);
 	}
 
 	if (download) {
