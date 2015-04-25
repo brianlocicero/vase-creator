@@ -11,6 +11,7 @@ function init() {
       lighting,
       latheMesh,
       latheGeometry,
+      vaseNum = 0,
       gui = new dat.GUI(),
       isWireframe = true,
       webGLRenderer = new THREE.WebGLRenderer();
@@ -21,7 +22,7 @@ function init() {
     latheGeometry = new VaseGeometry(30, guiControls.segments, guiControls.heightVar, guiControls.sinVar, guiControls.cosVar);
     latheMesh = new VaseMesh(latheGeometry, guiControls.isWireframe);
     latheMesh.rotation.x = guiControls.rotation;
-    latheMesh.translateX(-7);
+    latheMesh.translateX(-9);
     scene.add(latheMesh);
   }
 
@@ -63,17 +64,14 @@ function init() {
   latheGeometry = new VaseGeometry(30, 24, 5, 0.2, 0.3);
   latheMesh = new VaseMesh(latheGeometry, isWireframe);
   latheMesh.rotation.x = -(Math.PI / 2);
-  latheMesh.translateX(-7);
+  latheMesh.translateX(-9);
   scene.add(latheMesh);
-
-  //set initial download
-  exportSTL();
-  $("a.download").attr("href", document.myHref);
 
   //subsequently
   $("a.download").on("click", function () {
     exportSTL();
-    $(this).attr("href", document.myHref);
+    vaseNum++;
+    $(this).attr("href", document.myHref).attr("download", "vase-" + vaseNum + ".stl");
   });
 
   //render
